@@ -22,7 +22,7 @@ export class LockDatabaseService {
 
   public async unlock(id: Types.ObjectId): Promise<{ error: boolean }> {
     try {
-      await this.locksModel.deleteOne({ lockKey: id });
+      await this.locksModel.deleteOne({ _id: id });
 
       return { error: false }
     } catch (e) {

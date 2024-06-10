@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { ReturnModelType } from '@typegoose/typegoose';
 import { LinksModel } from '../models/links.schema';
 import { Types } from 'mongoose';
+import { ObjectId } from "mongodb";
 
 @Injectable()
 export class LinksDatabaseService {
@@ -20,7 +21,7 @@ export class LinksDatabaseService {
   public async getLinkById(
     id: string,
   ): Promise<{ text: string; isActive: boolean }> {
-    const link = await this.linksModel.findOne({ _id: id });
+    const link = await this.linksModel.findOne({ _id: new ObjectId(id) });
 
     if (!link) {
       throw new NotFoundException('Извините, такой ссылки не существует');
@@ -33,6 +34,6 @@ export class LinksDatabaseService {
   }
 
   public async disableLink(id: string): Promise<void> {
-    await this.linksModel.updateOne({ _id: id }, { isActive: false });
+    await this.linksModel.updateOne({ _id: new ObjectId(id) }, { isActive: false });
   }
 }
